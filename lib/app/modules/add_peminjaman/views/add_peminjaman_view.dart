@@ -25,9 +25,21 @@ class AddPeminjamanView extends GetView<AddPeminjamanController> {
                       InputDecoration(hintText: "Masukkan Tanggal Pinjam"),
                   validator: (value) {
                     if (value!.length < 2) {
-                      return;
+                      return "Tanggal Tidak Boleh Kosong";
                     }
                     return null;
+                  },
+                  onTap: () async {
+                    DateTime? selectedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2100)
+                    );
+                    if (selectedDate != null) {
+                      String formattedDate = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+                      controller.tanggalpController.text = formattedDate;
+                    }
                   },
                 ),
                 TextFormField(
@@ -36,9 +48,21 @@ class AddPeminjamanView extends GetView<AddPeminjamanController> {
                       InputDecoration(hintText: "Masukkan Tanggal Kembali"),
                   validator: (value) {
                     if (value!.length < 2) {
-                      return;
+                      return "Tanggal Tidak Boleh Kosong";
                     }
                     return null;
+                  },
+                  onTap: () async {
+                    DateTime? selectedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2100)
+                    );
+                    if (selectedDate != null) {
+                      String formattedDate = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+                      controller.tanggalkController.text = formattedDate;
+                    }
                   },
                 ),
                 Obx(
