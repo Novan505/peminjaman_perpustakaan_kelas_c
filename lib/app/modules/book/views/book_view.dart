@@ -1,11 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../data/model/response_book.dart';
+import '../../../routes/app_pages.dart';
 import '../controllers/book_controller.dart';
 
 class BookView extends GetView<BookController> {
   const BookView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,11 +17,28 @@ class BookView extends GetView<BookController> {
         title: const Text('BookView'),
         centerTitle: true,
       ),
-      body: const Center(
-        child: Text(
-          'BookView is working',
-          style: TextStyle(fontSize: 20),
+      body: controller.obx(
+        (state) => ListView.separated(
+          itemCount: state!.length,
+          itemBuilder: (context, index) {
+            DataBook dataBook = state[index];
+            return ListTile(
+              title: Text("${dataBook.judul}"),
+              subtitle: Text(
+                  "Penulis ${dataBook.penulis}\n${dataBook.penerbit} - ${dataBook.tahunTerbit}"),
+              trailing: ElevatedButton(
+                onPressed: () => Get.toNamed(Routes.ADD_PEMINJAMAN,
+                    parameters: {
+                      'id': (dataBook.id ?? 0).toString(),
+                      'judul': dataBook.judul ?? '-'
+                    }),
+                child: Text("Pinjam"),
+              ),
+            );
+          },
+          separatorBuilder: (context, index) => Divider(),
         ),
+        onLoading: CupertinoActivityIndicator(),
       ),
     );
   }
